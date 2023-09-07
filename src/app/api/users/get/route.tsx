@@ -10,6 +10,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url)
 
 const user_id = searchParams.get('user_id');
+{/* @ts-ignore */}
 const mainUser = await clerkClient.users.getUser(user_id);
 
 return new NextResponse(JSON.stringify({ mainUser }), {
