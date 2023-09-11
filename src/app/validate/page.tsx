@@ -15,28 +15,34 @@ export default function Validate({ params, searchParams }) {
   const [userName, setUserName] = useState(null);
   const mainUserId = searchParams.user_id;
 
-  if (userId !== 'user_2V1byctNqwkR0Zwhps5BIn1WRX2') {
-    return <div>Your account does not have admin permissions!</div>;
-  }
-
   useEffect(() => {
+    if (userId !== 'user_2V1byctNqwkR0Zwhps5BIn1WRX2') {
+      return;
+    }
     async function fetchUser() {
       const userResponse = await axios.get(`/api/users/get?user_id=${mainUserId}`);
-      const userFirsLastName = userResponse.data.mainUser.firstName + ' ' + userResponse.data.mainUser.lastName;
+      const userFirstLastName = userResponse.data.mainUser.firstName + ' ' + userResponse.data.mainUser.lastName;
       //@ts-ignore
-      setUserName(userFirsLastName);
+      setUserName(userFirstLastName);
     }
     fetchUser();
-  }, [mainUserId, searchParams.event_id]);
+  }, [mainUserId, searchParams.event_id, userId]);
 
   useEffect(() => {
+    if (userId !== 'user_2V1byctNqwkR0Zwhps5BIn1WRX2') {
+      return;
+    }
     async function fetchData() {
       const eventId = searchParams.event_id;  // Replace with actual event_id
       const eventResponse = await axios.get(`/api/events/get?event_id=${eventId}`);
       setEvent(eventResponse.data.events);
     }
     fetchData();
-  }, [mainUserId, searchParams.event_id]);
+  }, [mainUserId, searchParams.event_id, userId]);
+
+  if (userId !== 'user_2V1byctNqwkR0Zwhps5BIn1WRX2') {
+    return <div>Your account does not have admin permissions!</div>;
+  }
 
   //@ts-ignore
   const getArrivalStatus = (participantId, isGuest) => {
